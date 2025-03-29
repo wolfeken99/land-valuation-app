@@ -104,10 +104,8 @@ results = calculate_irr_based_land_value(
 
 st.subheader("📊 Results")
 for key, value in results.items():
-    if "IRR" in key:
+    if key == "Achieved IRR":
         st.write(f"**{key}:** {value * 100:.2f}%")
-    elif "Land Price" in key and isinstance(value, float):
-        st.write(f"**{key}:** ${value:,.2f}")
     elif isinstance(value, float):
         st.write(f"**{key}:** ${value:,.2f}")
     else:
