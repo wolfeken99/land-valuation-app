@@ -98,7 +98,9 @@ results = calculate_land_valuation(
 
 st.subheader("📊 Results")
 for key, value in results.items():
-    if isinstance(value, float):
+    if key == "IRR on Equity":
+        st.write(f"**{key}:** {value * 100:.2f}%")
+    elif isinstance(value, float):
         st.write(f"**{key}:** ${value:,.2f}")
     else:
         st.write(f"**{key}:** {value}")
