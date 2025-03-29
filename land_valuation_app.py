@@ -1,6 +1,7 @@
-# Land Valuation Streamlit App
+# Land Valuation Streamlit App (Auto-Calculate Version)
 import streamlit as st
 import numpy as np
+import numpy_financial as npf
 
 def calculate_land_valuation(
     lot_size_sqft,
@@ -39,7 +40,7 @@ def calculate_land_valuation(
         cash_flow = noi_year * equity_ratio
         annual_cash_flows[i] = cash_flow
     annual_cash_flows[-1] += exit_value
-    irr = np.irr([-equity_investment] + annual_cash_flows)
+    irr = npf.irr([-equity_investment] + annual_cash_flows)
 
     stabilized_value = noi / cap_rate
     target_total_costs = stabilized_value / (1 + target_profit_margin)
@@ -77,27 +78,27 @@ annual_rent_growth = st.sidebar.slider("Annual Rent Growth (%)", 0.00, 0.10, 0.0
 exit_cap_rate = st.sidebar.slider("Exit Cap Rate (%)", 0.02, 0.10, 0.05)
 equity_ratio = st.sidebar.slider("Equity Investment Ratio", 0.1, 1.0, 0.3)
 
-if st.sidebar.button("Calculate"):
-    results = calculate_land_valuation(
-        lot_size_sqft,
-        far,
-        apartment_size_sqft,
-        rent_per_unit_monthly,
-        vacancy_rate,
-        opex_ratio,
-        hard_cost_per_sqft,
-        soft_cost_ratio,
-        cap_rate,
-        target_profit_margin,
-        hold_years,
-        annual_rent_growth,
-        exit_cap_rate,
-        equity_ratio
-    )
+# Auto-run calculation
+results = calculate_land_valuation(
+    lot_size_sqft,
+    far,
+    apartment_size_sqft,
+    rent_per_unit_monthly,
+    vacancy_rate,
+    opex_ratio,
+    hard_cost_per_sqft,
+    soft_cost_ratio,
+    cap_rate,
+    target_profit_margin,
+    hold_years,
+    annual_rent_growth,
+    exit_cap_rate,
+    equity_ratio
+)
 
-    st.subheader("📊 Results")
-    for key, value in results.items():
-        if isinstance(value, float):
-            st.write(f"**{key}:** ${value:,.2f}")
-        else:
-            st.write(f"**{key}:** {value}")
+st.subheader("📊 Results")
+for key, value in results.items():
+    if isinstance(value, float):
+        st.write(f"**{key}:** ${value:,.2f}")
+    else:
+        st.write(f"**{key}:** {value}")
