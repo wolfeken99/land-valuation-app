@@ -1,4 +1,4 @@
-# Land Valuation Streamlit App – Solve for Land Price to Meet Target IRR
+ # Land Valuation Streamlit App – Solve for Land Price to Meet Target IRR
 import streamlit as st
 import numpy as np
 import numpy_financial as npf
@@ -106,6 +106,8 @@ st.subheader("📊 Results")
 for key, value in results.items():
     if "IRR" in key:
         st.write(f"**{key}:** {value * 100:.2f}%")
+    elif "Land Price" in key and isinstance(value, float):
+        st.write(f"**{key}:** ${value:,.2f}")
     elif isinstance(value, float):
         st.write(f"**{key}:** ${value:,.2f}")
     else:
